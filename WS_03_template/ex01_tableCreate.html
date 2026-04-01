@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<style type="text/css">
+  table{table-layout: fixed; width: 400px;border: 1px red solid; text-align: center;}
+  td,th{border:1px gray solid;}
+  a{text-decoration: none;}
+  input {width: stretch;}
+</style>
+
+
+</head>
+<body >
+  <h1>테이블 동적으로 생성하기 </h1>
+  <a href="#" id="add" >추가하기</a>
+
+  <table id="table">
+    <colgroup>
+      <col style="width: 40%;">
+      <col style="width: 40%;">
+      <col style="width: 20%;">
+    </colgroup>
+    <tr>
+      <th>이름</th>
+      <th>나이</th>
+      <th>삭제하기</th>
+    </tr>
+    <!-- 동적으로 tr 추가 또는 제거  -->
+</table>
+  <script>
+    let name = ["가나", "다라", "마바", "사아", "아자", "차카", "타파", "하하"];
+    //let age = [25, 30, 22, 20, 45, 35, 31, 28, 53, 32];
+    let index = 0;
+/*
+    document.querySelector("#add").addEventListener("click", function(){
+      let table = document.getElementById("table");
+      if(index<name.length && index<age.length){
+        let row = "<tr><td>"+name[index]+"</td><td>"+age[index]+"</td><td><button value='삭제'>삭제</button></td></tr>";
+        table.innerHTML += row;
+        index++;
+      }
+    }, false);
+    
+    // 동적으로 생성한 삭제버튼으로 테이블 행 삭제하기
+    document.querySelector("body").addEventListener("click", function(e){
+      if (e.target.matches('[value=삭제]')) {
+        let tr = e.target.parentElement.parentElement; // button -> td -> tr
+        tr.parentElement.removeChild(tr);
+        console.log("행 삭제");
+      }
+    });
+*/
+    
+    // 솔루션
+    let age = 0;
+    document.querySelector("#add").addEventListener("click", function(){
+      let tb = document.getElementById("table");
+
+      // 행 생성
+      let row = tb.insertRow(tb.rows.length); //<tr>
+
+      // 행에 td 추가
+      row.insertCell(0).innerHTML = `<input tpye='text' name='name' value='jeje' />`;
+      row.insertCell(1).innerHTML = `<input type="text" value="${age++}">`;
+      row.insertCell(2).innerHTML = `<button value='삭제'>삭제</button>`;
+    });
+
+    // 행 삭제 m 
+    document.querySelector("body").addEventListener("click", function(e){
+      if (e.target.matches('[value=삭제]')) {
+        let tr = e.target.parentElement.parentElement; // button -> td -> tr
+        tr.parentElement.removeChild(tr);
+        console.log("행 삭제");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
