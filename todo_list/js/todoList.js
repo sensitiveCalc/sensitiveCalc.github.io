@@ -39,7 +39,7 @@ onload = ()=> {
             todoItem += `<input type="checkbox" data-key='${item.id}' ${item.isDone ? "checked" : ""} onchange="onUpdate(${item.id})">`;
             todoItem += `<div class="content">${item.content}</div>`;
             todoItem += `<div class="date">${item.date}</div>`;
-            todoItem += `<button class="button" data-key='${item.id}' onclick="todoDel(${item.id})">삭제</button>`;
+            todoItem += `<button class="button" name='${item.id}' onclick="todoDel(this)">삭제</button>`;
             todoItem += `</div>`;
         });
         document.querySelector(".todos_wrapper").innerHTML = todoItem;
@@ -102,12 +102,17 @@ onload = ()=> {
     }
 
     // 4) 삭제
-    function todoDel(targetId) {
+    const todoDel = (th) => {
+        let targetId = Number(th.getAttribute("name"));
         // filter()함수를 이용해서 삭제하려는 대상이외의 todo만 추출해서 mockData에 담든다.
         if(!confirm("삭제하시겠습니까?")) return;
 
-        mockData = mockData.filter( item=> item.id !== targetId);
-        initData();
+        mockData = mockData.filter( item=> {
+            return item.id !== targetId;
+        });
+
+        initData(mockData);
+        console.log(mockData);
     }
 
     // 5) 검색
