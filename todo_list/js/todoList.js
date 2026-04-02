@@ -19,7 +19,7 @@ onload = ()=> {
     let date = new Date();
     let year = date.getFullYear()+ "년 ";
     let month = date.getMonth()+1 + "월 ";
-    let dayofWeek =  date.getDay() + "일 ";
+    let dayofWeek =  date.getDate() + "일 ";
     let week = day[new Date().getDay()] + "요일";
     let today = year + month + dayofWeek + week;
 
@@ -29,11 +29,6 @@ onload = ()=> {
 
     addData();
     
-    document.querySelector("#keyword").onkeyup = (e)=>{
-        let searchedTodos = getFilterData(e.target.value);
-        initData(searchedTodos);
-        console.log(searchedTodos);
-    }
 }
 
     // 1) mockData 배열을 forEach를 사용하여 화면에 출력
@@ -60,7 +55,7 @@ onload = ()=> {
                 // target이 없을 경우 예외 처리
                 if(!target) return;
                 target.isDone = isChk;
-                console.log(mockData);
+                console.log(isChk);
             });
         });
     }
@@ -69,21 +64,22 @@ onload = ()=> {
     function addData() {
         let idIndex = 3;
         document.querySelector(".Editor > button").onclick = (e)=>{
-            e.preventDefault(); // 기능 막기
-            let inputData = document.querySelector(".Editor > input");
+            e.preventDefault(); // 전송기능 막기
+            let inputData = document.querySelector("#input");
             let content = inputData.value;
+            let row = {
+                id: idIndex++, // 아이디값 자동증가
+                isDone: false, // 초기치 데이터는 false
+                content: content, // 사용자가 입력한 값
+                date: new Date().toLocaleString()
+            }
 
             if(!content){
                 alert("새로운 일정을 추가하세요");
                 return;
             }
 
-            mockData.push({
-                id: idIndex++,
-                isDone: false,
-                content: content,
-                date: new Date().toLocaleString()
-            });
+            mockData.push(row);
             inputData.value = ""; //입력값이 전송된 후 리셋
             initData(mockData);
 
@@ -92,19 +88,18 @@ onload = ()=> {
     }
 
     // 3) 수정(checkbox 상태 변경)
-    function onUpdate(targetId) {
+    const onUpdate = (targetId) => {
         // mockData의 state의 값들 중에 targetId와 일치하는 todoitem의 isDone 변경
-        // map함수를 이용한다. map함수의 결과를 mockData에 저장한다.
+        // map함수를 이용한다. map함수의 결과를 배열형태로 mockData에 저장한다.
         mockData = mockData.map( item=> {
-            if(item.id === targetId) {
-                return { ...item, isDone: !item.isDone };
+            if(item.id === Number(targetId)) { //값과 타입이 일치하면
+                return { ...item, isDone: !item.isDone }; // 값을 복사하고 isDone을 반대로 설정한다
             }
             return item;
         });
         initData(mockData);
         console.log(mockData);
     }
-    onUpdate();
 
     // 4) 삭제
     function todoDel(targetId) {
@@ -116,13 +111,20 @@ onload = ()=> {
     }
 
     // 5) 검색
-    function getFilterData(search) {
+    document.querySelector("#keyword").onkeyup = (e)=>{
+        let searchedTodos = getFilterData(e.target.value);
+        initData(searchedTodos);
+    }
+    const getFilterData = (search) => {
         //검색어가 없으면 mockData를 리턴
         if(search === ""){
             return mockData;
         }
 
         //filter함수를 이용해서 search(검색어)를 포함하고 있는 todo들를 받는다
-        return mockData.filter( item=> item.content.includes(search));
-        //initData(mockData);
+        const searchedTodos = mockData.filter( item=> {
+            return item.content.toLowerCase().includes(search.toLowerCase());
+        });
+
+        return searchedTodos;
     }
