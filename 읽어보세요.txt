@@ -18,7 +18,7 @@
 6. github.com에 githubpage를 위한 repository를 생성해주세요
     : 05.GitHubPage만들기.pdf파일을 참고하세요.
 
-7. 본인 pc에서 작성된 모든는 소스를 커밋하고
+7. 본인 pc에서 작성된 모든 소스를 커밋하고
    원격저장소에 push해주세요.
    git을 관리될 폴더를 생성하고 > git init > profile에 해당하는 index.html 문서 넣고
      1) todList폴더
